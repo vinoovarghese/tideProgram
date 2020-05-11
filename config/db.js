@@ -11,7 +11,7 @@ try {
             useUnifiedTopology: true,
             useCreateIndex: true
     })
-    console.log("COnnected to the Database ");
+    console.log("Mongo Db connection was successful .");
 } catch (error) {
     console.log("error connecting to the DB " + error.message);
 }
