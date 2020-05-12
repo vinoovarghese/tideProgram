@@ -1,13 +1,18 @@
 const mongoose = require('mongoose');
 const CustomerSchema = new mongoose.Schema({
 
-name :
-       {type : String,
+name  :
+        {type : String,
         required : true},
-email :{type : String,
+email :
+        {type : String,
         required : true,
         unique : true},
-address : {type : String},
+
+address : 
+        {type : String,
+        required : true 
+        },
 
 currency : { type : String}
 

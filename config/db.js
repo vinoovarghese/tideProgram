@@ -13,7 +13,7 @@ try {
     })
     console.log("Mongo Db connection was successful .");
 } catch (error) {
-    console.log("error connecting to the DB " + error.message);
+    console.log("Error connecting to the Mongo DB " + error.message);
 }
 
 }
