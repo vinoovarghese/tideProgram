@@ -5,6 +5,7 @@ const dbConnection = require("./config/db")
 const customerRouter = require("./routes/apis/customer")
 
 dbConnection();
+app.use(express.json({ extended: false }));
 
 app.get("/",(req,res)=> {
 
