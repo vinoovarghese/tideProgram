@@ -110,7 +110,7 @@ router.delete("/:custId",async (req, res) => {
     }
 
     const deletedCustomer = await Customer.findOneAndRemove({ _id: req.params.custId });
-    console.log("Customer was deleted " + deletedCustomer);
+    console.log(deletedCustomer.name +"was deleted : " + deletedCustomer);
     res.json({message: deletedCustomer.name + " was deleted !!! " , deletedCustomer});
 
 
@@ -121,6 +121,62 @@ router.delete("/:custId",async (req, res) => {
   }
 
 });
+
+//Route to update a specific customer by passing the customer (As of now,only name,address and currency can be changed)
+
+router.put("/:custId",
+[
+  //Validating name/address and currency.Email is a unique field and ideally should not be changed.
+   
+  check("name", "Name is required.").not().isEmpty(),
+  check("email", "Email can not be updated.").isEmpty(),
+  check("address", "Address is required.").not().isEmpty(),
+  check("currency", "Currency is required").not().isEmpty(),
+
+ ],
+async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  // Get details from the request body
+  const { name, address,currency} = req.body;
+
+  //Create a CustomerObject to store details from the request body
+
+  const CustomerObject={};
+  CustomerObject.name=name;
+  CustomerObject.address=address;
+  CustomerObject.currency=currency;
+
+  try {
+
+    //Find out whether the customer exists or not
+
+    const customerToBeUpdated = await Customer.findById({_id: req.params.custId});
+
+    if(!customerToBeUpdated) {
+
+      return res.status(404).send({ message: " No such customer with the customerid  :  " + req.params.custId + " exists !!!"});
+    }
+
+    const customerUpdated = await Customer.findOneAndUpdate(
+                {_id: req.params.custId},
+                { $set: CustomerObject},
+                { new: true }
+              ); 
+    console.log("After updating customer ",customerUpdated);
+    return res.json({message: customerUpdated.name + " was updated !!! " , customerUpdated});
+       
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(message,"Some error has occured " , error.message);
+  }
+  }
+  
+);
+
 
 
 module.exports=router;
