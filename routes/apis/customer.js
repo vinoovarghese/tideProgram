@@ -51,8 +51,8 @@ router.post(
         customer = await customer.save();
        
        console.log(customer.name + " was succesfully registered !!!");
-       res.
-       res.json(customer);
+       res.json({message:customer.name + " was succesfully registered !!!",Object:customer});
+       
        
       }
     } catch (err) {
