@@ -12,7 +12,7 @@ app.get("/",(req,res)=> {
  res.send("Default route for the TIDE program main server.js file.");
 });
 
-app.listen(process.env.port || port,()=> {
+app.listen(process.env.PORT || port,()=> {
 
     console.log("Server started on port " + port);
 });

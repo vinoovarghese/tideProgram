@@ -4,9 +4,10 @@
   "description": "TIDE program project",
   "main": "server.js",
   "scripts": {
+    "start" : "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-     "server":  "nodemon server",
-     "start" : "node server.js"
+     "server":  "nodemon server"
+     
   },
   "author": "Vinoo Varghese",
   "license": "ISC",
