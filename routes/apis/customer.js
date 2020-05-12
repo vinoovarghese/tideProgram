@@ -21,7 +21,7 @@ router.post(
     check("name", "Name is required.").not().isEmpty(),
     check("email", "Please enter a valid email.").isEmail(),
     check("address", "Address is required.").not().isEmpty(),
-    check("currency", "Currency is required").not().isEmpty(),
+    check("currency", "Currency is required.").not().isEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -131,7 +131,7 @@ router.put("/:custId",
   check("name", "Name is required.").not().isEmpty(),
   check("email", "Email can not be updated.").isEmpty(),
   check("address", "Address is required.").not().isEmpty(),
-  check("currency", "Currency is required").not().isEmpty(),
+  check("currency", "Currency is required.").not().isEmpty(),
 
  ],
 async (req, res) => {
