@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const port=5000;
 const dbConnection = require("./config/db")
-const customerRouter = require("./routes/apis/customer")
+const customerRouter = require("./routes/apis/customer");
+const ordersRouter = require("./routes/apis/orders");
+
 
 dbConnection();
 app.use(express.json({ extended: false }));
@@ -15,6 +17,11 @@ app.get("/",(req,res)=> {
 app.listen(process.env.PORT || port,()=> {
 
     console.log("Server started on port " + port);
+    
 });
 
+//Routes for customers and orders
+
+
 app.use("/v1/api/customers",customerRouter);
+app.use("/v1/api/orders",ordersRouter);
