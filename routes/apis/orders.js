@@ -32,6 +32,8 @@ router.post(
         const { description, quantity, value } = req.body;
 
         try {
+            
+            //find whether the customer given is a valid customer.
 
             let existingCustomer = await Customer.findById(req.params.customerId);
             if(!existingCustomer) {
@@ -74,7 +76,7 @@ router.get("/allOrders/:customerId", async (req, res) => {
                 return res.status(400).json({ errors: [{ message: "There is no customer with  this customer id : " + req.params.customerId }] });
             } 
            const allOrders = await Orders.find({customer: req.params.customerId});
-           if(!allOrders) {
+           if(allOrders.length==0) {
             return res.status(400).json({ errors: [{ message: "There are no orders for this customer with this customerId" + req.params.customerId }] });  
            }
            res.json({message:"Orders for this customerId :" + req.params.customerId + " are below : ",allOrders});
