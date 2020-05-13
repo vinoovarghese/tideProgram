@@ -39,7 +39,7 @@ router.post(
             } else {
 
                 let newOrderObject = {
-                    customer: req.params.customerid,
+                    customer: req.params.customerId,
                     description,
                     quantity,
                     value,
@@ -73,7 +73,7 @@ router.get("/allOrders/:customerId", async (req, res) => {
             if(!existingCustomer) {
                 return res.status(400).json({ errors: [{ message: "There is no customer with  this customer id : " + req.params.customerId }] });
             } 
-           const allOrders = await Orders.find({customer: req.params.customerId}).populate("customer", ["name"]);
+           const allOrders = await Orders.find({customer: req.params.customerId});
            if(!allOrders) {
             return res.status(400).json({ errors: [{ message: "There are no orders for this customer with this customerId" + req.params.customerId }] });  
            }
