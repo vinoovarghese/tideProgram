@@ -10,6 +10,9 @@ router.get("/",(req,res)=>
     res.send("Default router from Orders page");
 });
 
+
+// Route to create a new order for a customer
+
 router.post(
     "/:customerId",
     [
@@ -55,7 +58,47 @@ router.post(
 
     }
 
+    //
+
 
 );
+
+// Route to retrieve all orders for a customer
+
+router.get("/allOrders/:customerId", async (req, res) => { 
+
+    try {
+    
+        let existingCustomer = await Customer.findById(req.params.customerId);
+            if(!existingCustomer) {
+                return res.status(400).json({ errors: [{ message: "There is no customer with  this customer id : " + req.params.customerId }] });
+            } 
+           const allOrders = await Orders.find({customer: req.params.customerId}).populate("customer", ["name"]);
+           if(!allOrders) {
+            return res.status(400).json({ errors: [{ message: "There are no orders for this customer with this customerId" + req.params.customerId }] });  
+           }
+           res.json({message:"Orders for this customerId :" + req.params.customerId + " are below : ",allOrders});
+     } catch (error) {
+       console.log(error.message);
+       res.status(500).message("error");
+     }
+   });
+
+ //Route to get a particular orderId 
+
+ router.get("/:orderId", async (req, res) => {
+     try {
+          const orderDetails = await Orders.findById(req.params.orderId);
+          if (!orderDetails) {
+            return res.status(400).json({ message: "No orders found for this orderid : "+ req.params.orderId});
+          }
+          res.json({message:"Details for this orderId :" + req.params.orderId + " are below : ",orderDetails});
+
+     } catch (error) {
+         res.status(500).send(error.message);
+     }
+     
+ });
+
 
 module.exports=router;
