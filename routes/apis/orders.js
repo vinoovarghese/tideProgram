@@ -90,7 +90,7 @@ router.get("/allOrders/:customerId", async (req, res) => {
      try {
           const orderDetails = await Orders.findById(req.params.orderId);
           if (!orderDetails) {
-            return res.status(400).json({ message: "No orders found for this orderid : "+ req.params.orderId});
+            return res.status(400).json({ message: "This orderid : "+ req.params.orderId + " is not valid !"});
           }
           res.json({message:"Details for this orderId :" + req.params.orderId + " are below : ",orderDetails});
 
