@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Customer = require("../../model/Customer");
+const Orders = require("../../model/Orders");
 const mongoose = require("mongoose");
 
 const { check, validationResult } = require("express-validator");
@@ -108,10 +109,12 @@ router.delete("/:custId",async (req, res) => {
        
       return res.status(404).send({ message: "No such customer with the customerid  :  " + req.params.custId + " exists !!!" });
     }
-
-    const deletedCustomer = await Customer.findOneAndRemove({ _id: req.params.custId });
+    
+    const allCustomerOrders = await Orders.find({customer:req.params.custId});
+ 
+    /*const deletedCustomer = await Customer.findOneAndRemove({ _id: req.params.custId });
     console.log(deletedCustomer.name +"was deleted : " + deletedCustomer);
-    res.json({message: deletedCustomer.name + " was deleted !!! " , deletedCustomer});
+    res.json({message: deletedCustomer.name + " was deleted !!! " , deletedCustomer});*/
 
 
   } catch (error) {
