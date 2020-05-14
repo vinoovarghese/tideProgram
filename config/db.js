@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const config = require("config");
 const dbStringUrl = config.get("dbconnection");
+const Logger = require("./logger");
 
 const getDbConnection = async() => {
 
@@ -11,9 +12,11 @@ try {
             useUnifiedTopology: true,
             useCreateIndex: true
     })
-    console.log("Mongo Db connection was successful .");
+    
+    Logger.log("info","Mongo Db connection was successful .");
 } catch (error) {
-    console.log("Error connecting to the Mongo DB " + error.message);
+    
+    Logger.log("error","Error connecting to the Mongo DB " + error.message);
 }
 
 }

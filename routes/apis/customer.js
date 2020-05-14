@@ -3,6 +3,7 @@ const router = express.Router();
 const Customer = require("../../model/Customer");
 const Orders = require("../../model/Orders");
 const mongoose = require("mongoose");
+const Logger = require("../../config/logger");
 
 const { check, validationResult } = require("express-validator");
 
@@ -50,14 +51,13 @@ router.post(
         });
       
         customer = await customer.save();
-       
-       console.log(customer.name + " was succesfully registered !!!");
-       res.json({message:customer.name + " was succesfully registered !!!",customer});
+        Logger.log("info",customer.name + " was succesfully registered !!!");
+        res.json({message:customer.name + " was succesfully registered !!!",customer});
        
        
       }
     } catch (err) {
-      console.log("Error has occured " + err.message);
+      Logger.log("error","Error has occured " + err.message);
       res.status(500).send("error");
     }
   }
@@ -71,7 +71,7 @@ router.get("/allCustomers", async (req, res) => {
      res.json({message:"List of customers below : " , allCustomers});
    
   } catch (error) {
-    console.log(error.message);
+    Logger.log("error","Error has occured " + error.message);
     res.status(500).message("error");
   }
 });
@@ -91,7 +91,7 @@ router.get("/allCustomers", async (req, res) => {
     res.json({message:"Customer details below : " , customerFound});
         
   } catch (error) {
-    console.log(error);
+    Logger.log("error","Error has occured " + error.message);
     res.status(500).message("error");
   }
 });
@@ -115,17 +115,18 @@ router.delete("/:custId",async (req, res) => {
     // Delete the orders of the customer who is going to be deleted.
 
     const ordersDeleted = await Orders.deleteMany({customer:req.params.custId});
+    Logger.log("info","Orders deleted : " + ordersDeleted);
 
     //Delete the customer
 
     const deletedCustomer = await Customer.findOneAndRemove({ _id: req.params.custId });
-    console.log(deletedCustomer.name +" was deleted : " + deletedCustomer);
-    res.json({message: deletedCustomer.name + " was deleted !!! " , deletedCustomer});
+    Logger.log("info",deletedCustomer.name +" was deleted : " + deletedCustomer);
+    res.json({message: deletedCustomer.name + " was deleted !!! " , deletedCustomer,allCustomerOrders});
 
 
   } catch (error) {
     
-    console.log(error);
+    Logger.log("error","Error has occured " + error.message);
     res.status(500).message("error");
   }
 
@@ -175,11 +176,12 @@ async (req, res) => {
                 { $set: CustomerObject},
                 { new: true }
               ); 
-    console.log("After updating customer ",customerUpdated);
+   
+    Logger.log("info","After updating customer ",customerUpdated);
     return res.json({message: customerUpdated.name + " was updated !!! " , customerUpdated});
        
   } catch (error) {
-    console.log(error);
+    Logger.log("error","Error has occured " + error.message);
     res.status(500).send(message,"Some error has occured " , error.message);
   }
   }

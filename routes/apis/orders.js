@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Customer=require("../../model/Customer");
 const Orders = require("../../model/Orders");
+const Logger = require("../../config/logger");
 
 const { check, validationResult } = require("express-validator");
 
@@ -49,12 +50,12 @@ router.post(
 
                   var newOrder = new Orders(newOrderObject);
                   newOrder = await newOrder.save();
-                  console.log(existingCustomer.name + " has succesfully placed an order !!");
+                  Logger.log("info",existingCustomer.name + " has succesfully placed an order !!");
                   res.json({message:existingCustomer.name + " has succesfully placed an order .",newOrder});
             }
             
         } catch (error) {
-            console.log("Error has occured " + err.message);
+            Logger.log("error","Error has occured " + error.message);
             res.status(500).send("error");
         }
 
@@ -81,7 +82,8 @@ router.get("/allOrders/:customerId", async (req, res) => {
            }
            res.json({message:"Orders for this customerId :" + req.params.customerId + " are below : ",allOrders});
      } catch (error) {
-       console.log(error.message);
+        Logger.log("error","Error has occured " + error.message);
+       
        res.status(500).message("error");
      }
    });
@@ -97,6 +99,7 @@ router.get("/allOrders/:customerId", async (req, res) => {
           res.json({message:"Details for this orderId :" + req.params.orderId + " are below : ",orderDetails});
 
      } catch (error) {
+        Logger.log("error","Error has occured " + error.message);
          res.status(500).send(error.message);
      }
      
