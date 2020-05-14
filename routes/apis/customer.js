@@ -111,10 +111,16 @@ router.delete("/:custId",async (req, res) => {
     }
     
     const allCustomerOrders = await Orders.find({customer:req.params.custId});
- 
-    /*const deletedCustomer = await Customer.findOneAndRemove({ _id: req.params.custId });
-    console.log(deletedCustomer.name +"was deleted : " + deletedCustomer);
-    res.json({message: deletedCustomer.name + " was deleted !!! " , deletedCustomer});*/
+
+    // Delete the orders of the customer who is going to be deleted.
+
+    const ordersDeleted = await Orders.deleteMany({customer:req.params.custId});
+
+    //Delete the customer
+
+    const deletedCustomer = await Customer.findOneAndRemove({ _id: req.params.custId });
+    console.log(deletedCustomer.name +" was deleted : " + deletedCustomer);
+    res.json({message: deletedCustomer.name + " was deleted !!! " , deletedCustomer});
 
 
   } catch (error) {

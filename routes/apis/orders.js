@@ -90,7 +90,7 @@ router.get("/allOrders/:customerId", async (req, res) => {
 
  router.get("/:orderId", async (req, res) => {
      try {
-          const orderDetails = await Orders.findById(req.params.orderId);
+          const orderDetails = await Orders.findById(req.params.orderId).populate("customer", ["name","address","currency"]);
           if (!orderDetails) {
             return res.status(400).json({ message: "This orderid : "+ req.params.orderId + " is not valid !"});
           }
